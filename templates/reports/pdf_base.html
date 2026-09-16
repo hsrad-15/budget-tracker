@@ -1,0 +1,43 @@
+{% load humanize %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+    @page { size: A4; margin: 2cm; }
+    body { font-family: 'Helvetica', 'Arial', sans-serif; color: #212529; font-size: 12px; }
+    h1 { font-size: 20px; margin-bottom: 0; color: #0d6efd; }
+    .subtitle { color: #6c757d; margin-top: 2px; margin-bottom: 20px; }
+    .header-box { border-bottom: 2px solid #0d6efd; padding-bottom: 12px; margin-bottom: 20px; }
+    .header-row { display: flex; justify-content: space-between; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    th, td { padding: 6px 8px; border: 1px solid #dee2e6; text-align: left; font-size: 11px; }
+    th { background-color: #f1f3f5; }
+    .metrics-grid { width: 100%; margin-bottom: 20px; }
+    .metrics-grid td { border: 1px solid #dee2e6; padding: 10px; width: 25%; }
+    .metric-label { font-size: 9px; text-transform: uppercase; color: #6c757d; }
+    .metric-value { font-size: 15px; font-weight: bold; margin-top: 2px; }
+    .section-title { font-size: 14px; font-weight: bold; margin: 18px 0 8px 0; color: #0d6efd; }
+    .text-danger { color: #dc3545; }
+    .text-success { color: #198754; }
+    .footer { margin-top: 30px; font-size: 9px; color: #adb5bd; text-align: center; }
+</style>
+</head>
+<body>
+    <div class="header-box">
+        <div class="header-row">
+            <div>
+                <h1>{{ report_title }}</h1>
+                <div class="subtitle">Period: {{ period_label }}</div>
+            </div>
+            <div style="text-align: right;">
+                <div><strong>{{ user.display_name }}</strong></div>
+                <div>{{ user.email }}</div>
+                <div style="font-size:10px; color:#6c757d;">Generated: {{ generated_at|date:"d M Y, H:i" }}</div>
+            </div>
+        </div>
+    </div>
+    {% block pdf_body %}{% endblock %}
+    <div class="footer">Budget &amp; Expense Tracker — Automatically generated report</div>
+</body>
+</html>

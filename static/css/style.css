@@ -1,0 +1,359 @@
+/* ==========================================================================
+   Budget Tracker — design tokens
+   Palette: Ivory / Sage / Emerald / Forest / Antique Gold
+   ========================================================================== */
+:root {
+    --ivory: #F2EBDD;
+    --ivory-dim: #E6DCC8;
+    --sage: #78947F;
+    --sage-dim: #5f7867;
+    --emerald: #185844;
+    --emerald-light: #1f6e54;
+    --forest: #102F27;
+    --forest-deep: #0a1f19;
+    --gold: #B08A4F;
+    --gold-light: #c9a568;
+    --gold-dark: #8f6f3c;
+    --rose: #9c4a44;
+    --rose-light: #b85e57;
+
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'Outfit', -apple-system, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    background:
+        radial-gradient(circle at 15% 0%, rgba(120, 148, 127, 0.18), transparent 45%),
+        radial-gradient(circle at 90% 15%, rgba(176, 138, 79, 0.12), transparent 40%),
+        var(--forest);
+    color: var(--ivory);
+    font-family: var(--font-body);
+    min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6, .display-font {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+}
+
+a { color: var(--gold-light); }
+a:hover { color: var(--gold); }
+
+/* ==========================================================================
+   Navbar
+   ========================================================================== */
+.navbar.app-navbar {
+    background: linear-gradient(180deg, var(--forest-deep), var(--forest)) !important;
+    border-bottom: 1px solid rgba(176, 138, 79, 0.35);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+}
+.app-navbar .navbar-brand {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--ivory) !important;
+    letter-spacing: 0.02em;
+}
+.app-navbar .nav-link {
+    color: var(--ivory-dim) !important;
+    font-weight: 500;
+    position: relative;
+    padding: 0.5rem 0.9rem !important;
+}
+.app-navbar .nav-link:hover,
+.app-navbar .nav-link.active {
+    color: var(--gold-light) !important;
+}
+.app-navbar .navbar-text { color: var(--sage) !important; font-style: italic; }
+
+/* ==========================================================================
+   Buttons — skeuomorphic depth: real press feedback, not a flat hover fade
+   ========================================================================== */
+.btn {
+    font-family: var(--font-body);
+    font-weight: 600;
+    border-radius: 8px;
+    border: none;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.btn-primary,
+.btn-gold {
+    background: linear-gradient(180deg, var(--gold-light), var(--gold-dark));
+    color: var(--forest-deep);
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.35) inset,
+        0 -2px 0 rgba(0, 0, 0, 0.25) inset,
+        0 6px 14px rgba(0, 0, 0, 0.35);
+}
+.btn-primary:hover, .btn-gold:hover {
+    background: linear-gradient(180deg, var(--gold), var(--gold-dark));
+    color: var(--forest-deep);
+    transform: translateY(-1px);
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.35) inset,
+        0 -2px 0 rgba(0, 0, 0, 0.25) inset,
+        0 9px 18px rgba(0, 0, 0, 0.4);
+}
+.btn-primary:active, .btn-gold:active {
+    transform: translateY(1px);
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.2) inset,
+        0 -1px 0 rgba(0, 0, 0, 0.3) inset,
+        0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+.btn-outline-primary, .btn-outline-secondary, .btn-outline-light {
+    background: transparent;
+    color: var(--ivory);
+    border: 1.5px solid var(--sage);
+}
+.btn-outline-primary:hover, .btn-outline-secondary:hover, .btn-outline-light:hover {
+    background: rgba(120, 148, 127, 0.18);
+    color: var(--ivory);
+    border-color: var(--gold-light);
+    transform: translateY(-1px);
+}
+
+.btn-danger, .btn-outline-danger {
+    background: transparent;
+    border: 1.5px solid var(--rose);
+    color: var(--rose-light);
+}
+.btn-danger:hover, .btn-outline-danger:hover {
+    background: var(--rose);
+    color: var(--ivory);
+    transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   Cards — floating ivory panels on the forest background
+   ========================================================================== */
+.card, .metric-card, .chart-card {
+    background: var(--ivory);
+    color: var(--forest-deep);
+    border: none;
+    border-radius: 14px;
+    position: relative;
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.6) inset,
+        0 18px 34px rgba(0, 0, 0, 0.35),
+        0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+/* 3D tilt — applied via JS (static/js/tilt.js) to elements with .tilt-card */
+.tilt-card {
+    transform-style: preserve-3d;
+    transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+    will-change: transform;
+}
+.tilt-card:hover {
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.6) inset,
+        0 28px 46px rgba(0, 0, 0, 0.4),
+        0 8px 16px rgba(0, 0, 0, 0.3);
+}
+.tilt-card .tilt-shine {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgba(255,255,255,0.25), transparent 55%);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+}
+.tilt-card:hover .tilt-shine { opacity: 1; }
+
+.metric-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--sage-dim);
+    font-weight: 600;
+}
+.metric-value {
+    font-family: var(--font-display);
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--forest-deep);
+}
+.metric-value.positive { color: var(--emerald); }
+.metric-value.negative { color: var(--rose); }
+
+.chart-card h6 { color: var(--forest); font-family: var(--font-display); font-size: 1.15rem; }
+
+/* ==========================================================================
+   Tables
+   ========================================================================== */
+.table { color: var(--forest-deep); }
+.table thead th {
+    color: var(--sage-dim);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-bottom: 2px solid var(--sage);
+}
+.table td, .table th { border-color: rgba(120, 148, 127, 0.25); vertical-align: middle; }
+.table-hover tbody tr:hover { background-color: rgba(120, 148, 127, 0.1); }
+
+.badge.bg-success { background-color: var(--emerald) !important; }
+.badge.bg-danger { background-color: var(--rose) !important; }
+
+/* ==========================================================================
+   Forms
+   ========================================================================== */
+.form-control, .form-select {
+    background-color: rgba(255, 255, 255, 0.65);
+    border: 1.5px solid var(--sage);
+    color: var(--forest-deep);
+    border-radius: 8px;
+}
+.form-control:focus, .form-select:focus {
+    background-color: #ffffff;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(176, 138, 79, 0.25);
+    color: var(--forest-deep);
+}
+.form-label { color: var(--forest-deep); font-weight: 600; font-size: 0.88rem; }
+
+/* ==========================================================================
+   Auth pages (login / signup) — the one deliberate 3D moment
+   ========================================================================== */
+.auth-wrapper {
+    min-height: calc(100vh - 40px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 1400px;
+    padding: 2rem 1rem;
+}
+.auth-card-outer {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+}
+.auth-card {
+    background: var(--ivory);
+    border-radius: 18px;
+    padding: 2.75rem 2.25rem;
+    position: relative;
+    transform-style: preserve-3d;
+    box-shadow:
+        0 2px 0 rgba(255, 255, 255, 0.7) inset,
+        0 30px 60px rgba(0, 0, 0, 0.45),
+        0 10px 20px rgba(0, 0, 0, 0.3);
+    transition: transform 0.12s ease-out;
+}
+.auth-card::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: 19px;
+    padding: 1px;
+    background: linear-gradient(135deg, var(--gold-light), transparent 40%, transparent 60%, var(--sage));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+}
+.auth-badge {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    margin: 0 auto 1.25rem;
+    background: linear-gradient(160deg, var(--gold-light), var(--gold-dark));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    box-shadow:
+        0 1px 0 rgba(255,255,255,0.4) inset,
+        0 8px 18px rgba(176, 138, 79, 0.45);
+    transform: translateZ(30px);
+}
+.auth-title {
+    text-align: center;
+    color: var(--forest-deep);
+    font-size: 1.85rem;
+    margin-bottom: 0.25rem;
+    transform: translateZ(20px);
+}
+.auth-subtitle {
+    text-align: center;
+    color: var(--sage-dim);
+    font-size: 0.88rem;
+    margin-bottom: 1.75rem;
+    transform: translateZ(15px);
+}
+.auth-card form { transform: translateZ(10px); }
+.auth-footer-link {
+    text-align: center;
+    margin-top: 1.25rem;
+    font-size: 0.88rem;
+    color: var(--sage-dim);
+}
+
+/* Ambient floating petals behind the auth card (pure CSS, no image assets) */
+.auth-ambient {
+    position: absolute;
+    inset: -60px;
+    z-index: -1;
+    pointer-events: none;
+}
+.auth-ambient span {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(2px);
+    opacity: 0.55;
+    animation: floaty 7s ease-in-out infinite;
+}
+.auth-ambient span:nth-child(1) { width: 90px; height: 90px; background: var(--sage); top: -20px; left: -30px; animation-delay: 0s; }
+.auth-ambient span:nth-child(2) { width: 60px; height: 60px; background: var(--gold); bottom: -10px; right: -20px; animation-delay: 1.5s; }
+.auth-ambient span:nth-child(3) { width: 40px; height: 40px; background: var(--emerald-light); bottom: 30%; left: -40px; animation-delay: 3s; }
+
+@keyframes floaty {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-14px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .auth-ambient span { animation: none; }
+    .tilt-card, .auth-card { transition: none; }
+}
+
+/* ==========================================================================
+   Logout transition — a brief 3D recede, not an instant jump
+   ========================================================================== */
+body {
+    perspective: 1200px;
+}
+body.page-exit .container,
+body.page-exit .app-navbar {
+    animation: recede 0.42s ease forwards;
+}
+@keyframes recede {
+    to {
+        transform: translateZ(-120px) scale(0.96);
+        opacity: 0;
+        filter: blur(2px);
+    }
+}
+
+/* ==========================================================================
+   Alerts / misc
+   ========================================================================== */
+.alert { border-radius: 10px; border: none; }
+.alert-success { background: rgba(24, 88, 68, 0.85); color: var(--ivory); }
+.alert-danger { background: rgba(156, 74, 68, 0.85); color: var(--ivory); }
+
+.pagination .page-link {
+    background: var(--ivory);
+    border-color: var(--sage);
+    color: var(--forest-deep);
+}
+.pagination .page-item.active .page-link {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--forest-deep);
+}
+
+.table-actions form { display: inline; }

@@ -1,0 +1,70 @@
+{% extends "reports/pdf_base.html" %}
+{% block pdf_body %}
+
+<div class="section-title">Key Expense Metrics</div>
+<table class="metrics-grid">
+    <tr>
+        <td>
+            <div class="metric-label">Total Expense</div>
+            <div class="metric-value text-danger">₹{{ stats.total_expense|floatformat:2 }}</div>
+        </td>
+        <td>
+            <div class="metric-label">Highest Expense</div>
+            {% if stats.highest_expense %}
+            <div class="metric-value">₹{{ stats.highest_expense.amount|floatformat:2 }}</div>
+            <div>{{ stats.highest_expense.title }} — {{ stats.highest_expense.category.name }}</div>
+            {% else %}<div class="metric-value">—</div>{% endif %}
+        </td>
+        <td>
+            <div class="metric-label">Lowest Expense</div>
+            {% if stats.lowest_expense %}
+            <div class="metric-value">₹{{ stats.lowest_expense.amount|floatformat:2 }}</div>
+            <div>{{ stats.lowest_expense.title }} — {{ stats.lowest_expense.category.name }}</div>
+            {% else %}<div class="metric-value">—</div>{% endif %}
+        </td>
+        <td>
+            <div class="metric-label">Averages</div>
+            <div>Per Day: ₹{{ stats.avg_per_day|floatformat:2 }}</div>
+            <div>Per Week: ₹{{ stats.avg_per_week|floatformat:2 }}</div>
+            <div>Month Total: ₹{{ stats.total_expense|floatformat:2 }}</div>
+        </td>
+    </tr>
+</table>
+
+<div class="section-title">Weekly Grouped Totals</div>
+<table>
+    <thead><tr><th>Week</th><th>Total Spent</th></tr></thead>
+    <tbody>
+        {% for label, amount in weekly_totals.items %}
+        <tr><td>{{ label }}</td><td>₹{{ amount|floatformat:2 }}</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="section-title">Complete Daily Spending Entries</div>
+<table>
+    <thead><tr><th>Date</th><th>Day</th><th>Total Spent</th><th>Top Category</th></tr></thead>
+    <tbody>
+        {% for row in daily_rows %}
+        <tr>
+            <td>{{ row.day|date:"d M Y" }}</td>
+            <td>{{ row.day|date:"l" }}</td>
+            <td>₹{{ row.amount|floatformat:2 }}</td>
+            <td>{{ row.top_category|default:"—" }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="section-title">Spending by Category</div>
+<table>
+    <thead><tr><th>Category</th><th>Amount</th></tr></thead>
+    <tbody>
+        {% for name, amount in stats.category_totals.items %}
+        <tr><td>{{ name }}</td><td>₹{{ amount|floatformat:2 }}</td></tr>
+        {% empty %}
+        <tr><td colspan="2">No expenses recorded this period.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

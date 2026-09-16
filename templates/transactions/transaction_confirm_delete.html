@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Delete Transaction{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card chart-card p-4">
+            <h4>Delete Transaction</h4>
+            <p>Are you sure you want to delete "<strong>{{ object.title }}</strong>" (₹{{ object.amount }})?</p>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                <a href="{% url 'transaction_list' %}" class="btn btn-outline-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,77 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: budgetdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build: .
+    restart: unless-stopped
+    command: gunicorn budgetproject.wsgi:application --bind 0.0.0.0:8000 --workers 3
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/budgetdb
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+    ports:
+      - "8000:8000"
+    depends_on:
+      db: { condition: service_healthy }
+      redis: { condition: service_healthy }
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+
+  worker:
+    build: .
+    restart: unless-stopped
+    command: celery -A budgetproject worker -l info
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/budgetdb
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+      RUN_MIGRATIONS: "false"
+    depends_on:
+      db: { condition: service_healthy }
+      redis: { condition: service_healthy }
+
+  beat:
+    build: .
+    restart: unless-stopped
+    command: celery -A budgetproject beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/budgetdb
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+      RUN_MIGRATIONS: "false"
+    depends_on:
+      db: { condition: service_healthy }
+      redis: { condition: service_healthy }
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:

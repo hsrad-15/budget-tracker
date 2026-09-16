@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Login - Budget Tracker{% endblock %}
+{% block content %}
+<div class="auth-wrapper">
+    <div class="auth-card-outer">
+        <div class="auth-ambient"><span></span><span></span><span></span></div>
+        <div class="auth-card tilt-card" data-max-tilt="6" data-tilt-scale="1.015">
+            <div class="tilt-shine"></div>
+            <div class="auth-badge">💰</div>
+            <h3 class="auth-title">Welcome back</h3>
+            <p class="auth-subtitle">Sign in to see where your money's going</p>
+            {% if form.errors %}
+                <div class="alert alert-danger">That email and password don't match.</div>
+            {% endif %}
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    {{ form.username }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    {{ form.password }}
+                </div>
+                <button type="submit" class="btn btn-gold w-100 mt-2">Login</button>
+            </form>
+            <p class="auth-footer-link">
+                New here? <a href="{% url 'signup' %}">Create an account</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
